@@ -22,7 +22,10 @@ public class NoteDetailActivityTest {
 
     @Test
     public void fab_btn_onClick() {
+        Espresso.onView(ViewMatchers.withId(R.id.et_note_details)).perform(ViewActions.typeText("Test description"));
         Espresso.onView(ViewMatchers.withId(R.id.et_title)).perform(ViewActions.typeText("Test title"));
+        Espresso.onView(ViewMatchers.withId(R.id.et_title)).perform(ViewActions.closeSoftKeyboard());
+        Espresso.onView(ViewMatchers.withId(R.id.fab_save)).perform(ViewActions.click());
         try {
             Thread.sleep(2000);
         } catch (Exception e) {

@@ -21,6 +21,10 @@ public class NotesActivityTest {
     @Test
     public void fab_btn_onClick() {
         Espresso.onView(ViewMatchers.withId(R.id.fab)).perform(ViewActions.click());
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {
+        }
         Espresso.onView(ViewMatchers.withId(R.id.et_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 }
