@@ -28,9 +28,11 @@
         android:layout_height="match_parent"
         android:layout_below="@id/til_layout">
 
-        <android.support.design.widget.TextInputLayout
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_note_details"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></android.support.design.widget.TextInputLayout>
+            android:layout_height="match_parent"
+            android:hint="Enter note" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.FloatingActionButton

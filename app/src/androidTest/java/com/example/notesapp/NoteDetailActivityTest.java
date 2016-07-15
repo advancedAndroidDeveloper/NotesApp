@@ -1,5 +1,7 @@
 package com.example.notesapp;
 
+import static org.junit.Assert.*;
+
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.assertion.ViewAssertions;
@@ -14,13 +16,16 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class NotesActivityTest {
+public class NoteDetailActivityTest {
     @Rule
-    public ActivityTestRule<NotesActivity> mActivityRule = new ActivityTestRule<>(NotesActivity.class);
+    public ActivityTestRule<NoteDetailActivity> mActivityRule = new ActivityTestRule<>(NoteDetailActivity.class);
 
     @Test
     public void fab_btn_onClick() {
-        Espresso.onView(ViewMatchers.withId(R.id.fab)).perform(ViewActions.click());
-        Espresso.onView(ViewMatchers.withId(R.id.et_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+        Espresso.onView(ViewMatchers.withId(R.id.et_title)).perform(ViewActions.typeText("Test title"));
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {
+        }
     }
 }
