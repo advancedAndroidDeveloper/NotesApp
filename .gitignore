@@ -7,3 +7,6 @@
 /captures
 .idea/
 gradle/
+/backend/build
+backend/build/dependency-cache/
+backend/build/tmp/compileJava/
