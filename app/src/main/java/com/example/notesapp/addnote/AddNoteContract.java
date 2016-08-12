@@ -29,7 +29,7 @@ public interface AddNoteContract {
 
         void showEmptyNoteError();
 
-        void showNotesList();
+        void showNotesList(String id);
 
         void openCamera(String saveTo);
 

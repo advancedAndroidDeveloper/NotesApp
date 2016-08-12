@@ -17,6 +17,7 @@
 package com.example.notesapp.addnote;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 
 import com.example.notesapp.data.Note;
@@ -57,11 +58,11 @@ public class AddNotePresenter implements AddNoteContract.UserActionsListener {
             imageUrl = mImageFile.getPath();
         }
         Note newNote = new Note(title, description, imageUrl);
-        if (newNote.getTitle()==null||newNote.getDescription()==null) {
+        if (TextUtils.isEmpty(newNote.getTitle())||TextUtils.isEmpty(newNote.getDescription())) {
             mAddNoteView.showEmptyNoteError();
         } else {
             mNotesRepository.saveNote(newNote);
-            mAddNoteView.showNotesList();
+            mAddNoteView.showNotesList(newNote.getId());
         }
     }
 

@@ -34,22 +34,21 @@ public final class NotesServiceApiEndpoint {
 
 
     private static NotesServiceApiEndpoint instance;
-    private final Realm realm;
+    private static Realm realm;
 
-    private NotesServiceApiEndpoint() {
-        realm =
-                Realm.getInstance(
-                        new RealmConfiguration.Builder(NotesApplication.getAppContext())
-                                .name("myOtherRealm.realm")
-                                .build()
-                );
-    }
+
 
     public static NotesServiceApiEndpoint getInstance() {
 
         if (instance == null) {
             instance = new NotesServiceApiEndpoint();
         }
+        realm =
+                Realm.getInstance(
+                        new RealmConfiguration.Builder(NotesApplication.getAppContext())
+                                .name("myOtherRealm.realm")
+                                .build()
+                );
         return instance;
     }
 
@@ -59,6 +58,7 @@ public final class NotesServiceApiEndpoint {
         realm.beginTransaction();
         realm.copyToRealm(note);
         realm.commitTransaction();
+        realm.close();
     }
 
     //query a single item with the given id
@@ -67,12 +67,23 @@ public final class NotesServiceApiEndpoint {
         return realm.where(Note.class).equalTo("id", id).findFirst();
     }
 
-    //query a single item with the given id
+    //delete a single item with the given id
     public void deleteNote(String id) {
         realm.beginTransaction();
         Note result = realm.where(Note.class).equalTo("id", id).findFirst();
         result.removeFromRealm();
         realm.commitTransaction();
+        realm.close();
+    }
+
+    //update a single item with the given id
+    public void updateNote(Note note,String serverID) {
+        Note toEdit = realm.where(Note.class)
+                .equalTo("id", note.getId()).findFirst();
+        realm.beginTransaction();
+        toEdit.setServerId(serverID);
+        realm.commitTransaction();
+        realm.close();
     }
 
 
@@ -100,6 +111,7 @@ public final class NotesServiceApiEndpoint {
         realm.beginTransaction();
         realm.clear(Note.class);
         realm.commitTransaction();
+        realm.close();
     }
 
 

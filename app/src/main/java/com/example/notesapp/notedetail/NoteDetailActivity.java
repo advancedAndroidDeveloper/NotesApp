@@ -39,6 +39,7 @@ import com.example.notesapp.util.EspressoIdlingResource;
 public class NoteDetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_NOTE_ID = "NOTE_ID";
+    public static final String EXTRA_SERVER_NOTE_ID = "SERVER_NOTE_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +56,9 @@ public class NoteDetailActivity extends AppCompatActivity {
 
         // Get the requested note id
         String noteId = getIntent().getStringExtra(EXTRA_NOTE_ID);
+        String serverId = getIntent().getStringExtra(EXTRA_SERVER_NOTE_ID);
 
-        initFragment(NoteDetailFragment.newInstance(noteId));
+        initFragment(NoteDetailFragment.newInstance(noteId,serverId));
     }
 
     @Override

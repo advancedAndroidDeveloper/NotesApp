@@ -68,6 +68,12 @@ public class InMemoryNotesRepository implements NotesRepository {
     }
 
     @Override
+    public void updateNote(@NonNull Note note,String serverId) {
+        checkNotNull(note);
+        mNotesServiceApi.updateNote(note,serverId);
+    }
+
+    @Override
     public void deleteNote(@NonNull String noteId) {
         checkNotNull(noteId);
         mNotesServiceApi.deleteNote(noteId);

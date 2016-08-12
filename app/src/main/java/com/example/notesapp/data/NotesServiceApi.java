@@ -35,5 +35,7 @@ public interface NotesServiceApi {
 
     void deleteNote(String noteId);
 
+    void updateNote(Note note,String serverId);
+
     void saveNote(Note note);
 }

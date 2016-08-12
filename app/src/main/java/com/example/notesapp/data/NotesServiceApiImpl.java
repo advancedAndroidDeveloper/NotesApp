@@ -57,6 +57,11 @@ public class NotesServiceApiImpl implements NotesServiceApi {
         NotesServiceApiEndpoint.getInstance().deleteNote(noteId);
     }
 
+    @Override
+    public void updateNote(Note note,String serverId) {
+        NotesServiceApiEndpoint.getInstance().updateNote(note,serverId);
+    }
+
 
     @Override
     public void saveNote(Note note) {

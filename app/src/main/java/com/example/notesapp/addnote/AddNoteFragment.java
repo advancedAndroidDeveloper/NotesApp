@@ -138,8 +138,10 @@ public class AddNoteFragment extends Fragment implements AddNoteContract.View {
     }
 
     @Override
-    public void showNotesList() {
-        getActivity().setResult(Activity.RESULT_OK);
+    public void showNotesList(String id) {
+        Intent data= new Intent();
+        data.putExtra("id",id);
+        getActivity().setResult(Activity.RESULT_OK,data);
         getActivity().finish();
     }
 

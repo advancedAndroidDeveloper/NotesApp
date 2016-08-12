@@ -17,6 +17,7 @@
 package com.example.notesapp.notes;
 
 import android.app.Activity;
+import android.app.IntentService;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,6 +39,8 @@ import android.widget.TextView;
 
 import com.example.notesapp.R;
 import com.example.notesapp.addnote.AddNoteActivity;
+import com.example.notesapp.backendinteraction.ServerConstants;
+import com.example.notesapp.backendinteraction.ServerSyncService;
 import com.example.notesapp.data.Note;
 import com.example.notesapp.data.NoteRepositories;
 import com.example.notesapp.data.NotesServiceApiImpl;
@@ -93,6 +96,10 @@ public class NotesFragment extends Fragment implements NotesContract.View {
         if (REQUEST_ADD_NOTE == requestCode && Activity.RESULT_OK == resultCode) {
             Snackbar.make(getView(), getString(R.string.successfully_saved_note_message),
                     Snackbar.LENGTH_SHORT).show();
+            Intent intent= new Intent(getActivity(), ServerSyncService.class);
+            intent.putExtra("action", ServerConstants.ACTION_SAVE);
+            intent.putExtra("id",data.getStringExtra("id"));
+            getActivity().startService(intent);
         }
     }
 
@@ -179,11 +186,12 @@ public class NotesFragment extends Fragment implements NotesContract.View {
     }
 
     @Override
-    public void showNoteDetailUi(String noteId) {
+    public void showNoteDetailUi(String noteId,String serverId) {
         // in it's own Activity, since it makes more sense that way and it gives us the flexibility
         // to show some Intent stubbing.
         Intent intent = new Intent(getContext(), NoteDetailActivity.class);
         intent.putExtra(NoteDetailActivity.EXTRA_NOTE_ID, noteId);
+        intent.putExtra(NoteDetailActivity.EXTRA_SERVER_NOTE_ID, serverId);
         startActivity(intent);
     }
 

@@ -76,7 +76,7 @@ public class NotesPresenter implements NotesContract.UserActionsListener {
     @Override
     public void openNoteDetails(@NonNull Note requestedNote) {
         checkNotNull(requestedNote, "requestedNote cannot be null!");
-        mNotesView.showNoteDetailUi(requestedNote.getId());
+        mNotesView.showNoteDetailUi(requestedNote.getId(),requestedNote.getServerId());
     }
 
 }

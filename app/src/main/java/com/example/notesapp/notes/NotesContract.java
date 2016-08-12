@@ -36,7 +36,7 @@ public interface NotesContract {
 
         void showAddNote();
 
-        void showNoteDetailUi(String noteId);
+        void showNoteDetailUi(String noteId,String serverId);
 
     }
 

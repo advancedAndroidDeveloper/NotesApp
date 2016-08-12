@@ -19,9 +19,12 @@ package com.example.notesapp.notedetail;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +38,9 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.example.notesapp.R;
+import com.example.notesapp.backendinteraction.ServerConstants;
+import com.example.notesapp.backendinteraction.ServerResultReceiver;
+import com.example.notesapp.backendinteraction.ServerSyncService;
 import com.example.notesapp.data.NoteRepositories;
 import com.example.notesapp.data.NotesServiceApiImpl;
 import com.example.notesapp.util.EspressoIdlingResource;
@@ -46,6 +52,7 @@ import com.example.notesapp.util.EspressoIdlingResource;
 public class NoteDetailFragment extends Fragment implements NoteDetailContract.View {
 
     public static final String ARGUMENT_NOTE_ID = "NOTE_ID";
+    public static final String ARGUMENT_SERVER_ID = "SERVER_ID";
 
     private NoteDetailContract.UserActionsListener mActionsListener;
 
@@ -55,9 +62,10 @@ public class NoteDetailFragment extends Fragment implements NoteDetailContract.V
 
     private ImageView mDetailImage;
 
-    public static NoteDetailFragment newInstance(String noteId) {
+    public static NoteDetailFragment newInstance(String noteId,String serverId) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_NOTE_ID, noteId);
+        arguments.putString(ARGUMENT_SERVER_ID, serverId);
         NoteDetailFragment fragment = new NoteDetailFragment();
         fragment.setArguments(arguments);
         return fragment;
@@ -120,7 +128,14 @@ public class NoteDetailFragment extends Fragment implements NoteDetailContract.V
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 String noteId = getArguments().getString(ARGUMENT_NOTE_ID);
+                String serverId = getArguments().getString(ARGUMENT_SERVER_ID);
+                Intent intent= new Intent(getActivity(), ServerSyncService.class);
+                intent.putExtra("action", ServerConstants.ACTION_DELETE);
+                intent.putExtra("id",noteId);
+                intent.putExtra("serverId",serverId);
+                getActivity().startService(intent);
                 mActionsListener.deleteNote(noteId);
+
             }
         })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

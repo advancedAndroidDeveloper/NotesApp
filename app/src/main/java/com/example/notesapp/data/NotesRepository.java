@@ -41,6 +41,8 @@ public interface NotesRepository {
 
     void saveNote(@NonNull Note note);
 
+    void updateNote(@NonNull Note note,String serverId);
+
     void deleteNote(@NonNull String noteId);
 
     void refreshData();
