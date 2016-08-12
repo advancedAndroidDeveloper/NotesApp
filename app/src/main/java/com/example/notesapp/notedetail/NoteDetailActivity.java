@@ -26,6 +26,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import com.example.notesapp.R;
 import com.example.notesapp.util.EspressoIdlingResource;
@@ -55,6 +57,13 @@ public class NoteDetailActivity extends AppCompatActivity {
         String noteId = getIntent().getStringExtra(EXTRA_NOTE_ID);
 
         initFragment(NoteDetailFragment.newInstance(noteId));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.fragment_note_options_menu_actions, menu);
+        return true;
     }
 
     @Override

@@ -27,6 +27,10 @@ public interface NoteDetailContract {
 
         void setProgressIndicator(boolean active);
 
+        void showDeleteConfirmationDialog();
+
+        void goBackToList();
+
         void showMissingNote();
 
         void hideTitle();
@@ -45,5 +49,9 @@ public interface NoteDetailContract {
     interface UserActionsListener {
 
         void openNote(@Nullable String noteId);
+
+        void deleteNote(@Nullable String noteId);
+
+        void checkForUserConfirmation();
     }
 }

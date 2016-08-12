@@ -37,6 +37,7 @@ public interface NotesContract {
         void showAddNote();
 
         void showNoteDetailUi(String noteId);
+
     }
 
     interface UserActionsListener {
@@ -46,5 +47,6 @@ public interface NotesContract {
         void addNewNote();
 
         void openNoteDetails(@NonNull Note requestedNote);
+
     }
 }

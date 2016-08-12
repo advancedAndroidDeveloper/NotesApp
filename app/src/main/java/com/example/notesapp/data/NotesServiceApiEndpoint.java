@@ -16,7 +16,15 @@
 
 package com.example.notesapp.data;
 
+import android.content.Context;
 import android.support.v4.util.ArrayMap;
+
+import com.example.notesapp.NotesApplication;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
+
 
 /**
  * This is the endpoint for your data source. Typically, it would be a SQLite db and/or a server
@@ -24,23 +32,75 @@ import android.support.v4.util.ArrayMap;
  */
 public final class NotesServiceApiEndpoint {
 
-    static {
-        DATA = new ArrayMap(2);
-        addNote("Oh yes!", "I demand trial by Unit testing", null);
-        addNote("Espresso", "UI Testing for Android", null);
+
+    private static NotesServiceApiEndpoint instance;
+    private final Realm realm;
+
+    private NotesServiceApiEndpoint() {
+        realm =
+                Realm.getInstance(
+                        new RealmConfiguration.Builder(NotesApplication.getAppContext())
+                                .name("myOtherRealm.realm")
+                                .build()
+                );
     }
 
-    private final static ArrayMap<String, Note> DATA;
+    public static NotesServiceApiEndpoint getInstance() {
 
-    private static void addNote(String title, String description, String imageUrl) {
-        Note newNote = new Note(title, description, imageUrl);
-        DATA.put(newNote.getId(), newNote);
+        if (instance == null) {
+            instance = new NotesServiceApiEndpoint();
+        }
+        return instance;
     }
+
+
+
+    public  void addNote(Note note) {
+        realm.beginTransaction();
+        realm.copyToRealm(note);
+        realm.commitTransaction();
+    }
+
+    //query a single item with the given id
+    public Note getNote(String id) {
+
+        return realm.where(Note.class).equalTo("id", id).findFirst();
+    }
+
+    //query a single item with the given id
+    public void deleteNote(String id) {
+        realm.beginTransaction();
+        Note result = realm.where(Note.class).equalTo("id", id).findFirst();
+        result.removeFromRealm();
+        realm.commitTransaction();
+    }
+
 
     /**
      * @return the Notes to show when starting the app.
      */
-    public static ArrayMap<String, Note> loadPersistedNotes() {
-        return DATA;
+    public  RealmResults<Note> loadPersistedNotes() {
+
+        // Sort by id, in descending order
+        RealmResults<Note> results =
+                realm.where(Note.class)
+                        .findAllSorted("id", false);
+        return results;
     }
+
+    //Refresh the realm istance
+    public void refresh() {
+
+        realm.refresh();
+    }
+
+    //clear all objects from Book.class
+    public void clearAll() {
+
+        realm.beginTransaction();
+        realm.clear(Note.class);
+        realm.commitTransaction();
+    }
+
+
 }

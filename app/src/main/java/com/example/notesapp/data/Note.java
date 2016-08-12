@@ -22,67 +22,76 @@ import com.google.common.base.Objects;
 
 import java.util.UUID;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Immutable model class for a Note.
  */
-public final class Note {
+public  class Note extends RealmObject {
+    @PrimaryKey
+    private  String id;
+    @Nullable
+    private  String title;
+    @Nullable
+    private  String description;
+    @Nullable
+    private  String imageUrl;
+    private  String serverId="";
 
-    private final String mId;
-    @Nullable
-    private final String mTitle;
-    @Nullable
-    private final String mDescription;
-    @Nullable
-    private final String mImageUrl;
-
-    public Note(@Nullable String title, @Nullable String description) {
-        this(title, description, null);
+    public Note() {
+        id = UUID.randomUUID().toString();
     }
 
     public Note(@Nullable String title, @Nullable String description, @Nullable String imageUrl) {
-        mId = UUID.randomUUID().toString();
-        mTitle = title;
-        mDescription = description;
-        mImageUrl = imageUrl;
+        id = UUID.randomUUID().toString();
+        this.title = title;
+        this.description = description;
+        this.imageUrl = imageUrl;
     }
 
     public String getId() {
-        return mId;
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Nullable
     public String getTitle() {
-        return mTitle;
+        return title;
     }
 
     @Nullable
     public String getDescription() {
-        return mDescription;
+        return description;
     }
 
     @Nullable
     public String getImageUrl() {
-        return mImageUrl;
+        return imageUrl;
     }
 
-    public boolean isEmpty() {
-        return (mTitle == null || "".equals(mTitle)) &&
-                (mDescription == null || "".equals(mDescription));
+    public String getServerId() {
+        return serverId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Note note = (Note) o;
-        return Objects.equal(mId, note.mId) &&
-                Objects.equal(mTitle, note.mTitle) &&
-                Objects.equal(mDescription, note.mDescription) &&
-                Objects.equal(mImageUrl, note.mImageUrl);
+    public void setTitle(@Nullable String title) {
+        this.title = title;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(mId, mTitle, mDescription, mImageUrl);
+    public void setDescription(@Nullable String description) {
+        this.description = description;
     }
+
+    public void setImageUrl(@Nullable String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setServerId(String serverId) {
+        this.serverId = serverId;
+    }
+
+
 }

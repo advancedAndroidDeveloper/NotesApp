@@ -16,10 +16,14 @@
 
 package com.example.notesapp.notedetail;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -66,6 +70,12 @@ public class NoteDetailFragment extends Fragment implements NoteDetailContract.V
                 this);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,6 +85,17 @@ public class NoteDetailFragment extends Fragment implements NoteDetailContract.V
         mDetailDescription = (TextView) root.findViewById(R.id.note_detail_description);
         mDetailImage = (ImageView) root.findViewById(R.id.note_detail_image);
         return root;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete : {
+                mActionsListener.checkForUserConfirmation();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -90,6 +111,32 @@ public class NoteDetailFragment extends Fragment implements NoteDetailContract.V
            mDetailTitle.setText("");
             mDetailDescription.setText(getString(R.string.loading));
         }
+    }
+
+
+    public void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Delete this note");
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                String noteId = getArguments().getString(ARGUMENT_NOTE_ID);
+                mActionsListener.deleteNote(noteId);
+            }
+        })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                    // Create the AlertDialog object and return it
+                     builder.create().show();
+
+    }
+
+    @Override
+    public void goBackToList() {
+        getActivity().setResult(Activity.RESULT_OK);
+        getActivity().finish();
     }
 
     @Override

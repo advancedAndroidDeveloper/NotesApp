@@ -57,13 +57,14 @@ public class AddNotePresenter implements AddNoteContract.UserActionsListener {
             imageUrl = mImageFile.getPath();
         }
         Note newNote = new Note(title, description, imageUrl);
-        if (newNote.isEmpty()) {
+        if (newNote.getTitle()==null||newNote.getDescription()==null) {
             mAddNoteView.showEmptyNoteError();
         } else {
             mNotesRepository.saveNote(newNote);
             mAddNoteView.showNotesList();
         }
     }
+
 
     @Override
     public void takePicture() throws IOException {

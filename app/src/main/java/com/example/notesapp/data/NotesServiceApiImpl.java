@@ -22,14 +22,15 @@ import android.support.v4.util.ArrayMap;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmResults;
+
 /**
  * Implementation of the Notes Service API that adds a latency simulating network.
  */
 public class NotesServiceApiImpl implements NotesServiceApi {
 
     private static final int SERVICE_LATENCY_IN_MILLIS = 2000;
-    private static final ArrayMap<String, Note> NOTES_SERVICE_DATA =
-            NotesServiceApiEndpoint.loadPersistedNotes();
+
 
     @Override
     public void getAllNotes(final NotesServiceCallback callback) {
@@ -38,22 +39,30 @@ public class NotesServiceApiImpl implements NotesServiceApi {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                List<Note> notes = new ArrayList<>(NOTES_SERVICE_DATA.values());
-                callback.onLoaded(notes);
+
+                callback.onLoaded(NotesServiceApiEndpoint.getInstance().loadPersistedNotes());
             }
         }, SERVICE_LATENCY_IN_MILLIS);
     }
 
     @Override
     public void getNote(final String noteId, final NotesServiceCallback callback) {
-        //TODO: Add network latency here too.
-        Note note = NOTES_SERVICE_DATA.get(noteId);
+        Note note = NotesServiceApiEndpoint.getInstance().getNote(noteId);
         callback.onLoaded(note);
     }
 
+
+    @Override
+    public void deleteNote(String noteId) {
+        NotesServiceApiEndpoint.getInstance().deleteNote(noteId);
+    }
+
+
     @Override
     public void saveNote(Note note) {
-        NOTES_SERVICE_DATA.put(note.getId(), note);
+        NotesServiceApiEndpoint.getInstance().addNote(note);
     }
+
+
 
 }

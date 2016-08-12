@@ -33,5 +33,7 @@ public interface NotesServiceApi {
 
     void getNote(String noteId, NotesServiceCallback<Note> callback);
 
+    void deleteNote(String noteId);
+
     void saveNote(Note note);
 }

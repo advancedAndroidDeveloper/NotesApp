@@ -62,6 +62,18 @@ public class NoteDetailPresenter implements NoteDetailContract.UserActionsListen
         });
     }
 
+    @Override
+    public void deleteNote(@Nullable String noteId) {
+        mNotesRepository.deleteNote(noteId);
+        mNotesDetailView.goBackToList();
+    }
+
+    @Override
+    public void checkForUserConfirmation() {
+        mNotesDetailView.showDeleteConfirmationDialog();
+    }
+
+
     private void showNote(Note note) {
         String title = note.getTitle();
         String description = note.getDescription();

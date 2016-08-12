@@ -37,6 +37,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
+    compile "io.realm:realm-android:$rootProject.realmVersion"
     compile ("com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"){
         exclude group: 'com.android.support'
     }

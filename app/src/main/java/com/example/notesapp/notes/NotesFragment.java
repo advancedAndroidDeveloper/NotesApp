@@ -18,6 +18,7 @@ package com.example.notesapp.notes;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -186,7 +188,8 @@ public class NotesFragment extends Fragment implements NotesContract.View {
     }
 
 
-    private static class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
+
+    public static class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
         private List<Note> mNotes;
         private NoteItemListener mItemListener;
@@ -231,7 +234,7 @@ public class NotesFragment extends Fragment implements NotesContract.View {
             return mNotes.get(position);
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
             public TextView title;
 
@@ -253,6 +256,7 @@ public class NotesFragment extends Fragment implements NotesContract.View {
                 mItemListener.onNoteClick(note);
 
             }
+
         }
     }
 
